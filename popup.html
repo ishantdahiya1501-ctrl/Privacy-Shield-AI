@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Privacy Shield AI</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <div id="app" class="app">
+      <header class="header">
+        <div class="logo">
+          <svg viewBox="0 0 64 64" aria-hidden="true">
+            <path
+              d="M32 4L56 14V30C56 44 46 56 32 60C18 56 8 44 8 30V14L32 4Z"
+            />
+            <path d="M22 32L30 40L44 24" class="check" />
+          </svg>
+        </div>
+        <div class="titles">
+          <h1>Privacy Shield AI</h1>
+          <p>AI Privacy Scanner</p>
+        </div>
+        <span class="badge">Your data never leaves your PC</span>
+      </header>
+
+      <section class="settings-panel">
+        <div class="setting-row">
+          <label for="modelSelect">Model</label>
+          <select id="modelSelect">
+            <option value="tinyllama">TinyLlama</option>
+            <option value="gemma4">Gemma 4</option>
+            <option value="qwen2.5:0.5b">Qwen2.5 0.5B</option>
+          </select>
+        </div>
+        <div class="setting-row">
+          <label for="modeSelect">Mode</label>
+          <select id="modeSelect">
+            <option value="fast">Fast</option>
+            <option value="deep">Deep</option>
+          </select>
+        </div>
+        <div class="setting-row">
+          <label for="chunkLimit">Chunks</label>
+          <input id="chunkLimit" type="number" min="2" max="10" value="3" />
+        </div>
+        <button id="rgbToggle" class="rgb-toggle" type="button">RGB Off</button>
+      </section>
+
+      <button id="scanBtn" class="scan-btn">Do Privacy Scan</button>
+
+      <section id="loading" class="loading hidden">
+        <div class="scanline"></div>
+        <div class="loading-title">Scanning<span class="dots"></span></div>
+        <div class="progress">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="terminal" id="loadingLog"></div>
+      </section>
+
+      <section id="error" class="error hidden">
+        <h2>Scan Failed</h2>
+        <p id="errorMessage"></p>
+        <div class="hint" id="errorHint"></div>
+      </section>
+
+      <section id="results" class="results hidden">
+        <div class="grid">
+          <div class="card score-card">
+            <div class="score-ring" id="scoreRing">
+              <div class="score-value" id="scoreValue">--</div>
+              <div class="score-label">
+                <span>Privacy Score</span>
+                <strong id="gradeValue">--</strong>
+              </div>
+            </div>
+            <div class="risk-badge" id="riskBadge">UNKNOWN</div>
+          </div>
+
+          <div class="card policy-card">
+            <div>
+              <h3>Policy Source</h3>
+              <p id="policyUrlText">No policy loaded</p>
+            </div>
+            <a id="openPolicy" class="ghost-btn" href="#" target="_blank" rel="noreferrer">Open Policy</a>
+          </div>
+
+          <div class="card summary-card">
+            <div class="section-title">
+              <h3>Privacy Summary</h3>
+              <span>Readable report</span>
+            </div>
+            <div class="summary-box">
+              <p id="summaryText"></p>
+            </div>
+            <div class="actions">
+              <button id="copySummary" class="ghost-btn">Copy Summary</button>
+              <button id="exportReport" class="ghost-btn">Export Report</button>
+            </div>
+          </div>
+
+          <div class="card explain-card">
+            <h3>Why This Score?</h3>
+            <ul id="scoreReasons"></ul>
+          </div>
+
+          <div class="card risk-groups-card">
+            <h3>Risk Groups</h3>
+            <div class="risk-groups">
+              <div>
+                <span class="group-label high">High Risk</span>
+                <ul id="highRiskItems"></ul>
+              </div>
+              <div>
+                <span class="group-label attention">Needs Attention</span>
+                <ul id="attentionItems"></ul>
+              </div>
+              <div>
+                <span class="group-label normal">Normal Data</span>
+                <ul id="normalItems"></ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Red Flags</h3>
+            <ul id="redFlags"></ul>
+          </div>
+
+          <div class="card">
+            <h3>Trackers</h3>
+            <ul id="trackers"></ul>
+            <div class="subnote" id="trackerNote"></div>
+          </div>
+
+          <div class="card tracker-details-card">
+            <h3>Tracker Details</h3>
+            <ul id="trackerDetails"></ul>
+          </div>
+
+          <div class="card">
+            <h3>Data Collected</h3>
+            <ul id="dataCollected"></ul>
+          </div>
+
+          <div class="card">
+            <h3>Permission Signals</h3>
+            <ul id="permissions"></ul>
+          </div>
+
+          <div class="card tips-card">
+            <h3>Privacy Tips</h3>
+            <ul id="privacyTips"></ul>
+          </div>
+        </div>
+
+        <div class="card terminal-card">
+          <h3>Scan Timeline</h3>
+          <div class="terminal" id="deployLog"></div>
+        </div>
+
+        <div class="card history-card">
+          <h3>Recent Scans</h3>
+          <div id="historyList" class="history-list"></div>
+        </div>
+      </section>
+
+      <footer class="credit">Made by Ishant Dahiya</footer>
+    </div>
+
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>
